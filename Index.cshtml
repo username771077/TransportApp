@@ -1,0 +1,89 @@
+﻿@*Define a model*@
+@model IEnumerable<Transport>
+@*Define ViewData*@
+@{
+    ViewData["Title"] = "List of transports";
+}
+@*Write code*@
+<h1>Welcome to Trasnport view-Index</h1>
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.TransportNumber)</th>
+                    <th>@Html.DisplayNameFor(model => model.TransportName)</th>
+                    <th>@Html.DisplayNameFor(model => model.FuelType.FuelTypeName)</th>
+                    <th>@Html.DisplayNameFor(model => model.TransportCategory.TransportType.TransportTypeName)</th>
+                    <th>@Html.DisplayNameFor(model => model.TransportBrand.BrandName)</th>
+                    <th>@Html.DisplayNameFor(model => model.TransportCategory.CategoryName)</th>
+                    <th>@Html.DisplayNameFor(model => model.TransportBrand.Manufacturer)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+
+                <tr>
+                    <td class="align-middle">@Html.DisplayFor(modelitem => item.TransportNumber)</td>
+                    <td class="align-middle">@Html.DisplayFor(modelitem => item.TransportName)</td>
+
+                    <td class="align-middle">
+                        @if (item.FuelType != null)
+                        {
+                            @Html.DisplayFor(modelitem => item.FuelType.FuelTypeName)
+                        }
+                        else
+                        {
+                            <span class="text-muted">N/A</span>
+                        }
+                    </td>
+                    <td class="align-middle">
+                        @if (item.TransportCategory!= null)
+                        {
+                            @Html.DisplayFor(modelitem => item.TransportCategory.TransportType.TransportTypeName)
+                        }
+                        else
+                        {
+                            <span class="text-muted">N/A</span>
+                        }
+                    </td>
+
+                    <td class="align-middle">
+                        @if (item.TransportBrand != null)
+                        {
+                            @Html.DisplayFor(modelitem => item.TransportBrand.BrandName)
+                        }
+                        else
+                        {
+                            <span class="text-muted">N/A</span>
+                        }
+                    </td>
+
+                    <td class="align-middle">@Html.DisplayFor(modelitem => item.TransportCategory.CategoryName)</td>
+                    <td class="align-middle">
+                        @if (item.TransportBrand != null)
+                        {
+                            @Html.DisplayFor(modelitem => item.TransportBrand.Manufacturer.ManufacturerName)
+                        }
+                        else
+                        {
+                            <span class="text-muted">N/A</span>
+                        }
+                    </td>
+                    <td class="align-middle">
+                        <a class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i> Edit</a>
+                        <a class="btn btn-outline-info"><i class="bi bi-pencil-eye"></i> Details</a>
+                        <a class="btn btn-danger text-white"><i class="bi bi-trash"></i> Delete</a>
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div style="position: fixed; right:25px; bottom:25px;" class="text-white">
+    <a asp-controller="Transports" asp-action="Create" class="btn btn-success"><i class="bi bi-plus-circle"></i>Add new</a>
+</div>

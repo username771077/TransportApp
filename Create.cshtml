@@ -1,0 +1,121 @@
+﻿@model TransportCreateViewModel
+@{ ViewData["Title"] = "Add a new Transport";
+}
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Add a New Transport</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Transport.TransportName" class="control-label"></label>
+                        <input asp-for="@Model.Transport.TransportName" class="form-control" />
+                        <span asp-validation-for="@Model.Transport.TransportName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Transport.CategoryId" class="control-label"></label>
+                        <select asp-for="@Model.Transport.CategoryId" class="form-control">
+                            @foreach (var item in Model.Categories)
+                            {
+                                <option value="@item.CategoryId">@item.CategoryName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="@Model.Transport.CategoryId" class="text-danger"></span>
+                    </div>
+
+                    @*<div class="form-group">
+            <label asp-for="@Model.Transport.BrandId" class="control-label"></label>
+            <input asp-for="@Model.Transport.BrandId" class="form-control" />
+            <span asp-validation-for="@Model.Transport.BrandId" class="text-danger"></span>
+        </div>*@
+                    <div class="form-group">
+                        <label asp-for="@Model.Transport.BrandId" class="control-label"></label>
+                        <select asp-for="@Model.Transport.BrandId" class="form-control">
+                            @foreach (var item in Model.BrandCategories)
+                            {
+                                <option value="@item.BrandId">@item.BrandName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="@Model.Transport.BrandId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Transport.FuelId" class="control-label"></label>
+                        <input asp-for="@Model.Transport.FuelId" class="form-control" />
+                        <span asp-validation-for="@Model.Transport.FuelId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Transport.TypeId" class="control-label"></label>
+                        <input asp-for="@Model.Transport.TypeId" class="form-control" />
+                        <span asp-validation-for="@Model.Transport.TypeId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Transport.ManufacturerId" class="control-label"></label>
+                        <input id="Transport_ManufacturerId" asp-for="@Model.Transport.ManufacturerId" class="form-control" />
+                        <span asp-validation-for="@Model.Transport.ManufacturerId" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-outline-success float-right" />
+                        <a class="btn btn-outline-secondary" asp-action="Create">Show All</a>
+                    </div>
+
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Handle change event of category dropdown
+            $('#Transport_CategoryId').change(function () {
+                var categoryId = $(this).val();
+                var url = '@Url.Action("GetTransportTypeByCategory", "Transports")';
+
+                // Make an AJAX request to retrieve the corresponding transport type
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: { categoryId: categoryId },
+                    success: function (result) {
+                        // Update the value of the transport type field
+                        $('#Transport_TypeId').val(result);
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+    // Handle change event of brand dropdown
+    $('#Transport_BrandId').change(function () {
+        var brandId = $(this).val();
+        var url = '@Url.Action("GetManufacturerTypeByBrand", "Transports")';
+
+        // Make an AJAX request to retrieve the corresponding manufacturer ID
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: { brandId: brandId },
+            success: function (result) {
+                console.log(result); // Check the value of result
+
+                // Update the value of the transport manufacturer field
+                $('#Transport_ManufacturerId').val(result);
+            }
+        });
+    });
+});
+
+    </script>
+    
+
+}
